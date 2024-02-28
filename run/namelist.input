@@ -1,0 +1,20 @@
+&config 
+grid_file_input_grid="/mnt/beegfs/eduardo.khamis/issues/434/MPASSIT/run/monan/x1.1024002.init.nc" 
+hist_file_input_grid="/mnt/beegfs/eduardo.khamis/issues/434/MPASSIT/run/monan/history.2024-02-11_00.00.00.nc" 
+diag_file_input_grid="/mnt/beegfs/eduardo.khamis/issues/434/MPASSIT/run/monan/diag.2024-02-11_00.00.00.nc" 
+file_target_grid="/mnt/beegfs/eduardo.khamis/issues/434/MPASSIT/run/monan/wrfinput_d01" 
+output_file="/mnt/beegfs/eduardo.khamis/issues/434/MPASSIT/run/monan/out_hist_diag.nc" 
+target_grid_type = 'lambert' 
+interp_diag=.true. 
+interp_hist=.true. 
+esmf_log=.false. 
+nx = 1801 
+ny = 1061 
+dx = 3000.0 
+dy = 3000.0 
+ref_lat = 38.50 
+ref_lon = -97.50 
+truelat1 = 38.5 
+truelat2 = 38.5 
+stand_lon = -97.5 
+/

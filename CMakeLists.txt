@@ -1,5 +1,5 @@
 # This is the CMake build file for the MPASSIT
-#
+# 
 # Larissa Reames
 
 cmake_minimum_required(VERSION 3.15)
@@ -46,6 +46,8 @@ endif()
 find_package(NetCDF 4.3.3 REQUIRED C Fortran)
 find_package(MPI REQUIRED C Fortran)
 find_package(ESMF 8.3.0 REQUIRED)
+#find_package(PNetCDF 1.12.3 REQUIRED)
+#find_package(XercesC 3.2.3 REQUIRED)
 
 if(OPENMP)
   find_package(OpenMP REQUIRED COMPONENTS Fortran)
@@ -57,7 +59,7 @@ endif()
 if(ENABLE_DOCS)
   find_package(Doxygen REQUIRED)
   set(abs_top_srcdir "${CMAKE_SOURCE_DIR}")
-  add_subdirectory(docs)  
+  add_subdirectory(docs)
 endif()
 
 set(lib_src
@@ -80,7 +82,7 @@ if(CMAKE_Fortran_COMPILER_ID MATCHES "^(Intel)$")
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -r8 -assume byterecl")
 elseif(CMAKE_Fortran_COMPILER_ID MATCHES "^(GNU)$")
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -ffree-line-length-0 -fdefault-real-8")
-  
+
   # Turn on this argument mismatch flag for gfortran10.
   if(CMAKE_Fortran_COMPILER_VERSION VERSION_GREATER_EQUAL 10)
      set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fallow-argument-mismatch")
@@ -100,6 +102,8 @@ target_link_libraries(
   mpassit_lib
   PUBLIC
   esmf
+  #xerces-c
+  #pnetcdf
   MPI::MPI_Fortran
   NetCDF::NetCDF_Fortran)
 
@@ -107,12 +111,19 @@ if(OpenMP_Fortran_FOUND)
   target_link_libraries(${exe_name} PUBLIC OpenMP::OpenMP_Fortran)
 endif()
 
+set(PNETCDF_DIR "/opt/ohpc/pub/libs/intel/impi/pnetcdf/1.12.2/")
+set(PNETCDF_INC "${PNETCDF_DIR}/include")
+set(PNETCDF_LIB "${PNETCDF_DIR}/lib")
+
+set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -I /mnt/beegfs/eduardo.khamis/.spack/spack_v0.19.2_oneapi_esmf/opt/spack/linux-rhel8-zen2/intel-2021.4.0/xerces-c-3.2.3-ak7nxew7shiut6zot5ciia553f4tjmoz/include -L /mnt/beegfs/eduardo.khamis/.spack/spack_v0.19.2_oneapi_esmf/opt/spack/linux-rhel8-zen2/intel-2021.4.0/xerces-c-3.2.3-ak7nxew7shiut6zot5ciia553f4tjmoz/lib -I ${PNETCDF_INC} -L ${PNETCDF_LIB} -lxerces-c -lpnetcdf")
+
+#set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -I ${PNETCDF_INC} -L ${PNETCDF_LIB} -lxerces-c -lpnetcdf")
+
 target_link_libraries(${exe_name} PRIVATE mpassit_lib)
 
 install(TARGETS ${exe_name} RUNTIME DESTINATION ${exec_dir})
 
 # If doxygen documentation we enabled, build it.
 if(ENABLE_DOCS)
-  add_subdirectory(docs)  
+  add_subdirectory(docs)
 endif()
-
