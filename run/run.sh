@@ -1,12 +1,17 @@
 #!/bin/bash
 
-RUN_DIR=$(pwd)
+RUN_DIR=$(pwd) 
 MPASSIT_DIR=$RUN_DIR/..
 
-mkdir -f $RUN_DIR/monan
-cp /mnt/beegfs/monan/MONAN-scripts/egeon_oper/MONAN/testcase/runs/GFS/2024020100/monanprd/diag.2024-02-11_00.00.00.nc monan/
-cp /mnt/beegfs/monan/MONAN-scripts/egeon_oper/MONAN/testcase/runs/GFS/2024020100/monanprd/x1.1024002.init.nc monan/
-cp ../../wrfinput_d01 monan/
+echo $RUN_DIR
+echo $MPASSIT_DIR
+
+mkdir -p $RUN_DIR/monan
+mkdir -p $RUN_DIR/logs
+#cp /mnt/beegfs/monan/MONAN-scripts/egeon_oper/MONAN/testcase/runs/GFS/2024020100/monanprd/diag.2024-02-11_00.00.00.nc monan/
+#cp /mnt/beegfs/monan/MONAN-scripts/egeon_oper/MONAN/testcase/runs/GFS/2024020100/monanprd/diag.2024-02-11_00.00.00.nc monan/history.2024-02-11_00.00.00.nc
+#cp /mnt/beegfs/monan/MONAN-scripts/egeon_oper/MONAN/testcase/runs/GFS/2024020100/monanprd/x1.1024002.init.nc monan/
+#cp ../../wrfinput_d01 monan/
 
 cat > namelist.input <<EOF
 &config 
@@ -17,7 +22,7 @@ file_target_grid="$RUN_DIR/monan/wrfinput_d01"
 output_file="$RUN_DIR/monan/out_hist_diag.nc" 
 target_grid_type = 'lambert' 
 interp_diag=.true. 
-interp_hist=.false. 
+interp_hist=.true. 
 esmf_log=.false. 
 nx = 1801 
 ny = 1061 
@@ -32,6 +37,7 @@ stand_lon = -97.5
 EOF
 
 cat > mpassit_exe.sh <<EOF0
+#!/bin/bash
 #SBATCH --nodes=2
 #SBATCH --ntasks=256
 #SBATCH --tasks-per-node=128
@@ -54,25 +60,24 @@ cd $RUN_DIR
 
 ldd ./mpassit
 
-echo $SLURM_JOB_NUM_NODES
+echo \$SLURM_JOB_NUM_NODES
 
-echo  "STARTING AT `date` "
-Start=`date +%s.%N`
-echo $Start > $RUN_DIR/Timing
+echo  "STARTING AT \`date\` "
+Start=\`date +%s.%N\`
+echo \$Start > $RUN_DIR/Timing
 
-time mpirun -np $SLURM_NTASKS -env UCX_NET_DEVICES=mlx5_0:1 -genvall ./${executable} namelist.input
+time mpirun -np \$SLURM_NTASKS -env UCX_NET_DEVICES=mlx5_0:1 -genvall ./\${executable} namelist.input
 
-End=`date +%s.%N`
-echo  "FINISHED AT `date` "
-echo $End   >> $RUN_DIR/Timing
-echo $Start $End | awk '{print $2 - $1" sec"}' >> $RUN_DIR/Timing
+End=\`date +%s.%N\`
+echo  "FINISHED AT \`date\` "
+echo \$End   >> $RUN_DIR/Timing
+echo \$Start \$End | awk '{print \$2 - \$1" sec"}' >> $RUN_DIR/Timing
 
 #
 # move logs
 #
 
-#mkdir -f $RUN_DIR/logs
-#mv $RUN_DIR/*.log $RUN_DIR/logs/
+mv $RUN_DIR/*.log $RUN_DIR/logs/
 
 exit 0
 
@@ -80,7 +85,7 @@ EOF0
 
 chmod +x mpassit_exe.sh
 
-#sbatch mpassit_exe.sh
+sbatch mpassit_exe.sh
 
 exit
 
