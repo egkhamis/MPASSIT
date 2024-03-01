@@ -2,14 +2,13 @@
 
 ``` 
 $ git clone https://github.com/egkhamis/MPASSIT
-$ cd MPASSIT
+$ cd MPASSIT/run
 $ source load_modules.sh
 $ ./compile.sh
 ``` 
 
 - Running MPASSIT:
 ```
-$ cd run
 $ ./run.sh
 ``` 
 
