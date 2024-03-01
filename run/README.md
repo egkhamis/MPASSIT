@@ -1,7 +1,7 @@
 - Compiling MPASSIT code at Egeon:
 
 ``` 
-$ git clone https://githug.com/egkhamis/MPASSIT
+$ git clone https://github.com/egkhamis/MPASSIT
 $ cd MPASSIT
 $ source load_modules.sh
 $ ./compile.sh
