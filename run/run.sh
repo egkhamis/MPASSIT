@@ -1,10 +1,8 @@
 #!/bin/bash
 
 RUN_DIR=$(pwd) 
-MPASSIT_DIR=$RUN_DIR/..
 
 echo $RUN_DIR
-echo $MPASSIT_DIR
 
 mkdir -p $RUN_DIR/monan
 mkdir -p $RUN_DIR/logs
@@ -50,13 +48,11 @@ cat > mpassit_exe.sh <<EOF0
 
 export executable=mpassit
 
-cd $MPASSIT_DIR
-. $MPASSIT_DIR/load_modules.sh
+cd $RUN_DIR
+. $RUN_DIR/load_modules.sh
 
 # generic
 ulimit -s unlimited
-
-cd $RUN_DIR
 
 ldd ./mpassit
 
