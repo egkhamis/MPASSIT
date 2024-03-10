@@ -1,4 +1,4 @@
-- Compiling MPASSIT code at Egeon:
+- Compiling MPASSIT code at egeon-login:
 
 ``` 
 $ git clone https://github.com/egkhamis/MPASSIT
