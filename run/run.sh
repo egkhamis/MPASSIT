@@ -66,12 +66,6 @@ echo  "FINISHED AT \`date\` "
 echo \$End   >> $RUN_DIR/Timing
 echo \$Start \$End | awk '{print \$2 - \$1" sec"}' >> $RUN_DIR/Timing
 
-#
-# move logs
-#
-
-mv $RUN_DIR/my_job_mpassit.* $RUN_DIR/logs/
-
 exit 0
 
 EOF0
@@ -79,6 +73,12 @@ EOF0
 chmod +x mpassit_exe.sh
 
 sbatch mpassit_exe.sh
+
+#
+# move logs
+#
+
+#mv $RUN_DIR/my_job_mpassit.* $RUN_DIR/logs/
 
 exit
 
