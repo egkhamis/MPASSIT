@@ -18,19 +18,16 @@ hist_file_input_grid="$RUN_DIR/monan/history.2024-02-11_00.00.00.nc"
 diag_file_input_grid="$RUN_DIR/monan/diag.2024-02-11_00.00.00.nc" 
 file_target_grid="$RUN_DIR/monan/wrfinput_d01" 
 output_file="$RUN_DIR/monan/out_hist_diag.nc" 
-target_grid_type = 'lambert' 
-interp_diag=.true. 
-interp_hist=.true. 
-esmf_log=.false. 
-nx = 1801 
-ny = 1061 
-dx = 3000.0 
-dy = 3000.0 
-ref_lat = 38.50 
-ref_lon = -97.50 
-truelat1 = 38.5 
-truelat2 = 38.5 
-stand_lon = -97.5 
+is_regional = .false.
+target_grid_type = 'LAT-LON'
+interp_diag=.true.
+interp_hist=.true.
+esmf_log=.false.
+nx = 720
+ny = 360
+ref_lat = -90.0
+ref_lon = 0.0
+stand_lon = 0.0
 /
 EOF
 
@@ -73,7 +70,7 @@ echo \$Start \$End | awk '{print \$2 - \$1" sec"}' >> $RUN_DIR/Timing
 # move logs
 #
 
-mv $RUN_DIR/*.log $RUN_DIR/logs/
+mv $RUN_DIR/my_job_mpassit.* $RUN_DIR/logs/
 
 exit 0
 
